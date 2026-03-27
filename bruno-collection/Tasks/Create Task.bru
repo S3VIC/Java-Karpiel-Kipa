@@ -1,0 +1,25 @@
+meta {
+  name: Create Task
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/tasks
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "Fix login bug",
+    "description": "Users cannot login with special characters",
+    "taskType": "BUG",
+    "project": { "id": 1 },
+    "user": { "id": 1 }
+  }
+}
