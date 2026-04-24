@@ -21,4 +21,22 @@ public class TaskService {
     public Task createTask(Task task) {
         return taskRepository.save(task);
     }
+
+    public Task updateTask(Long id, Task task) {
+        Task existing = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zadanie nie zostało znalezione: " + id));
+        existing.setTitle(task.getTitle());
+        existing.setDescription(task.getDescription());
+        existing.setTaskType(task.getTaskType());
+        existing.setProject(task.getProject());
+        existing.setUser(task.getUser());
+        return taskRepository.save(existing);
+    }
+
+    public void deleteTask(Long id) {
+        if (!taskRepository.existsById(id)) {
+            throw new RuntimeException("Zadanie nie zostało znalezione: " + id);
+        }
+        taskRepository.deleteById(id);
+    }
 }

@@ -21,4 +21,18 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    public User updateUser(Long id, User user) {
+        User existing = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Użytkownik nie został znaleziony: " + id));
+        existing.setUsername(user.getUsername());
+        return userRepository.save(existing);
+    }
+
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("Użytkownik nie został znaleziony: " + id);
+        }
+        userRepository.deleteById(id);
+    }
 }
