@@ -27,6 +27,13 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Pobierz zadanie o podanym id", description = "Zwraca zadanie o podanym id lub tworzy " +
+            "wyjątek jeśli zadanie nie zostało znalezione")
+    public Task getTaskById(@Parameter(description = "ID zadania do wyszukania") @PathVariable Long id) {
+        return taskService.findTaskById(id);
+    }
+
     @PostMapping
     @Operation(summary = "Utwórz nowe zadanie", description = "Dodaje nowe zadanie do bazy danych")
     public Task createTask(@Parameter(description = "Dane nowego zadania") @RequestBody Task task) {

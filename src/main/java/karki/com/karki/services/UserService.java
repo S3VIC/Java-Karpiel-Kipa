@@ -3,6 +3,7 @@ package karki.com.karki.services;
 import karki.com.karki.entity.User;
 import karki.com.karki.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,9 +23,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(Long id, User user) {
-        User existing = userRepository.findById(id)
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Użytkownik nie został znaleziony: " + id));
+    }
+    public User updateUser(Long id, User user) {
+        User existing = findUserById(id);
         existing.setUsername(user.getUsername());
         return userRepository.save(existing);
     }
