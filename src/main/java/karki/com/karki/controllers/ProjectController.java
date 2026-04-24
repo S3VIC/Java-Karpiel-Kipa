@@ -26,6 +26,13 @@ public class ProjectController {
         return projectService.getAllProjects();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Pobierz projekt o podanym id", description = "Zwraca projekt o podanym id lub tworzy " +
+            "wyjątek jeśli nie został znaleziony")
+    public Project getProjectById(@Parameter(description = "ID projektu do wyszukania") @PathVariable long id) {
+        return projectService.findProjectById(id);
+    }
+
     @PostMapping
     @Operation(summary = "Utwórz nowy projekt", description = "Dodaje nowy projekt do bazy danych")
     public Project save(@Parameter(description = "Dane nowego projektu") @RequestBody Project project) {

@@ -27,6 +27,13 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Pobierz użytkownika o podanym id", description = "Zwraca użytkownika o podanym id lub tworzy " +
+            "wyjątek jeśli nie został znaleziony")
+    public User getUserById(@Parameter(description = "ID użytkownika do wyszukania") @PathVariable Long id) {
+        return userService.findUserById(id);
+    }
+
     @PostMapping
     @Operation(summary = "Utwórz nowego użytkownika", description = "Dodaje nowego użytkownika do bazy danych")
     public User createUser(@Parameter(description = "Dane nowego użytkownika") @RequestBody User user) {
