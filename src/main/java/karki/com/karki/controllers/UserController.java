@@ -32,4 +32,18 @@ public class UserController {
     public User createUser(@Parameter(description = "Dane nowego użytkownika") @RequestBody User user) {
         return userService.createUser(user);
     }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Zaktualizuj użytkownika", description = "Aktualizuje istniejącego użytkownika na podstawie jego ID")
+    public User updateUser(
+            @Parameter(description = "ID użytkownika do aktualizacji") @PathVariable Long id,
+            @Parameter(description = "Nowe dane użytkownika") @RequestBody User user) {
+        return userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Usuń użytkownika", description = "Usuwa użytkownika na podstawie jego ID")
+    public void deleteUser(@Parameter(description = "ID użytkownika do usunięcia") @PathVariable Long id) {
+        userService.deleteUser(id);
+    }
 }
