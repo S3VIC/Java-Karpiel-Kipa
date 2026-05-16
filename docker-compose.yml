@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: karki-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-karki}
+      POSTGRES_USER: ${POSTGRES_USER:-karki}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-karki}
+    ports:
+      - "5433:5432"
+    volumes:
+      - karki-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-karki} -d ${POSTGRES_DB:-karki}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: karki-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-karki}
+      DB_USERNAME: ${POSTGRES_USER:-karki}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-karki}
+      JPA_DDL_AUTO: ${JPA_DDL_AUTO:-update}
+      JPA_SHOW_SQL: ${JPA_SHOW_SQL:-true}
+    ports:
+      - "8080:8080"
+
+volumes:
+  karki-db-data:
